@@ -17,9 +17,8 @@ python3 verify_setup.py
 
 **Option A: Using the run script (Recommended)**
 ```bash
-# Mac/Linux
+# Mac/Linuxx
 ./run.sh
-
 # Windows
 run.bat
 ```

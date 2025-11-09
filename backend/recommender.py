@@ -74,11 +74,19 @@ class AssessmentRecommender:
         query_embedding = self.model.encode([query])
         similarities = cosine_similarity(query_embedding, self.embeddings)[0]
         
-        # Get top candidates (more than needed for balancing)
-        top_indices = np.argsort(similarities)[::-1][:top_k * 3]
+        # Debug: Print top similarities
+        print(f"\n🔍 Query: {query}")
+        print(f"📊 Top 5 similarity scores:")
+        top_5_indices = np.argsort(similarities)[::-1][:5]
+        for idx in top_5_indices:
+            print(f"   {self.assessments[idx]['name']}: {similarities[idx]:.4f}")
         
-        # Extract query requirements using LLM if available
+        # Get top candidates (more than needed for balancing)
+        top_indices = np.argsort(similarities)[::-1][:min(len(self.assessments), top_k * 3)]
+        
+        # Extract query requirements
         requirements = self._extract_requirements(query)
+        print(f"🎯 Detected types: {requirements['test_types_needed']}")
         
         # Balance recommendations by test type
         recommendations = self._balance_recommendations(
@@ -97,25 +105,39 @@ class AssessmentRecommender:
         
         query_lower = query.lower()
         
-        # Technical skills
+        # Technical skills (Knowledge & Skills - K)
         tech_keywords = ['java', 'python', 'sql', 'javascript', 'programming', 
-                        'coding', 'technical', 'developer', 'engineer']
+                        'coding', 'technical', 'developer', 'engineer', 'software',
+                        'database', 'web', 'frontend', 'backend', 'fullstack',
+                        'react', 'node', 'angular', 'vue', 'django', 'flask',
+                        'c++', 'c#', 'ruby', 'php', 'go', 'rust', 'kotlin', 'swift']
         for keyword in tech_keywords:
             if keyword in query_lower:
                 requirements['technical_skills'].append(keyword)
                 requirements['test_types_needed'].add('K')
         
-        # Behavioral skills
-        behavioral_keywords = ['collaborate', 'teamwork', 'communication', 
-                              'leadership', 'personality', 'behavior']
+        # Behavioral skills (Personality & Behavior - P)
+        behavioral_keywords = ['collaborate', 'collaboration', 'teamwork', 'team', 
+                              'communication', 'leadership', 'leader', 'personality', 
+                              'behavior', 'interpersonal', 'social', 'management',
+                              'manage', 'motivate', 'inspire', 'influence']
         for keyword in behavioral_keywords:
             if keyword in query_lower:
                 requirements['behavioral_skills'].append(keyword)
                 requirements['test_types_needed'].add('P')
         
-        # Cognitive
-        cognitive_keywords = ['cognitive', 'analytical', 'problem-solving', 'reasoning']
+        # Cognitive/Ability (Ability & Aptitude - A)
+        cognitive_keywords = ['cognitive', 'analytical', 'problem-solving', 'reasoning',
+                             'logic', 'critical thinking', 'aptitude', 'ability',
+                             'numerical', 'verbal', 'abstract', 'spatial']
         for keyword in cognitive_keywords:
+            if keyword in query_lower:
+                requirements['test_types_needed'].add('A')
+        
+        # Competencies (C)
+        competency_keywords = ['competenc', 'skill', 'strategic', 'planning',
+                              'decision', 'judgment', 'professional']
+        for keyword in competency_keywords:
             if keyword in query_lower:
                 requirements['test_types_needed'].add('C')
         
@@ -127,14 +149,21 @@ class AssessmentRecommender:
                                 top_k: int) -> List[Dict]:
         """Balance recommendations across different test types"""
         recommendations = []
+        seen_indices = set()
         test_type_counts = defaultdict(int)
         
         # Determine target distribution
         needed_types = requirements['test_types_needed']
+        
         if len(needed_types) == 0:
-            # No specific requirements, use top similarity
+            # No specific requirements, use top similarity scores
             for idx in indices[:top_k]:
-                recommendations.append(self._format_recommendation(idx, similarities[idx]))
+                if idx not in seen_indices:
+                    recommendations.append(self._format_recommendation(idx, similarities[idx]))
+                    seen_indices.add(idx)
+            # Remove internal index
+            for rec in recommendations:
+                rec.pop('_idx', None)
             return recommendations
         
         # Calculate slots per type
@@ -144,6 +173,9 @@ class AssessmentRecommender:
         for idx in indices:
             if len(recommendations) >= top_k:
                 break
+            
+            if idx in seen_indices:
+                continue
                 
             assessment = self.assessments[idx]
             test_type = assessment.get('test_type', 'O')
@@ -151,18 +183,25 @@ class AssessmentRecommender:
             if test_type in needed_types:
                 if test_type_counts[test_type] < slots_per_type:
                     recommendations.append(self._format_recommendation(idx, similarities[idx]))
+                    seen_indices.add(idx)
                     test_type_counts[test_type] += 1
         
         # Second pass: fill remaining slots with best matches
         for idx in indices:
             if len(recommendations) >= top_k:
                 break
-            if idx not in [r['_idx'] for r in recommendations]:
+            if idx not in seen_indices:
                 recommendations.append(self._format_recommendation(idx, similarities[idx]))
+                seen_indices.add(idx)
         
-        # Remove internal index and sort by score
+        # Sort by relevance score BEFORE removing internal index
+        recommendations.sort(key=lambda x: x['relevance_score'], reverse=True)
+        
+        # Remove internal index
         for rec in recommendations:
             rec.pop('_idx', None)
+        
+        print(f"✅ Returning {len(recommendations)} recommendations (sorted by relevance)\n")
         
         return recommendations[:top_k]
     

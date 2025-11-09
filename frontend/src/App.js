@@ -111,6 +111,24 @@ function App() {
           </div>
         )}
       </main>
+
+      <footer className="App-footer">
+        <div className="footer-content">
+          <div className="footer-main">
+            <h3 className="pixel-title">⚡ SHL Assessment Recommender AI ⚡</h3>
+            <p className="footer-tagline">Intelligent hiring decisions powered by AI</p>
+          </div>
+          <div className="footer-tech">
+            <span className="tech-badge">React</span>
+            <span className="tech-badge">FastAPI</span>
+            <span className="tech-badge">ML</span>
+          </div>
+          <div className="footer-credits">
+            <p className="made-by">Made with ❤️ by <strong>Shivangi Singh</strong></p>
+            <p className="copyright">© 2025 | GenAI Assessment System</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
