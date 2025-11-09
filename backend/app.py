@@ -11,16 +11,18 @@ import os
 
 app = FastAPI(title="SHL Assessment Recommendation API")
 
-# CORS middleware
+# CORS middleware - Allow frontend to access API
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://aptigen-ai-11yy.onrender.com",
-        "http://localhost:3000"
+        "http://localhost:3000",  # Local development
+        "http://localhost:3001",
+        "https://aptigen-ai-11yy.onrender.com",  # Your deployed frontend
+        "*"  # Allow all origins (you can restrict this in production)
     ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
 )
 
 
