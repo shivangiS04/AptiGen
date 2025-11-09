@@ -13,7 +13,10 @@ app = FastAPI(title="SHL Assessment Recommendation API")
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://aptigen-ai-11yy.onrender.com",  # your deployed frontend
+        "http://localhost:3000"  # optional, for local dev
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
