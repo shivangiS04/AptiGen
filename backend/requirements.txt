@@ -12,3 +12,12 @@ python-dotenv==1.0.0
 lxml==4.9.3
 aiohttp==3.9.1
 chromadb==0.4.18
+setuptools>=65.5.0
+wheel
+pip
+google-generativeai
+sentence-transformers
+torch
+fastapi
+uvicorn
+
