@@ -50,7 +50,7 @@ def main():
     all_good &= check_file("backend/app.py", "API application")
     all_good &= check_file("backend/recommender.py", "Recommendation engine")
     all_good &= check_file("backend/scraper.py", "Web scraper")
-    all_good &= check_file("backend/requirements.txt", "Backend dependencies")
+    all_good &= check_file("requirements.txt", "Backend dependencies")
     print()
     
     # Check frontend files
