@@ -13,8 +13,13 @@ from collections import defaultdict
 
 
 class AssessmentRecommender:
-    def __init__(self, assessments_path: str = '../data/assessments.json'):
+    def __init__(self, assessments_path: str = None):
         self.model = SentenceTransformer('all-MiniLM-L6-v2')
+        
+        # Smart path resolution for different environments
+        if assessments_path is None:
+            assessments_path = self._find_assessments_file()
+        
         self.assessments = self._load_assessments(assessments_path)
         self.embeddings = None
         
@@ -28,13 +33,35 @@ class AssessmentRecommender:
             
         self._build_index()
     
+    def _find_assessments_file(self) -> str:
+        """Find assessments.json in multiple possible locations"""
+        possible_paths = [
+            'data/assessments.json',      # Render deployment (backend/data/)
+            '../data/assessments.json',   # Local development
+            'assessments.json',            # Same directory
+            './backend/data/assessments.json',  # From project root
+        ]
+        
+        for path in possible_paths:
+            if os.path.exists(path):
+                print(f"✓ Found assessments at: {path}")
+                return path
+        
+        print("⚠ Warning: assessments.json not found in any location. Using sample data.")
+        return 'data/assessments.json'  # Default fallback
+    
     def _load_assessments(self, path: str) -> List[Dict]:
         """Load assessments from JSON file"""
         try:
             with open(path, 'r', encoding='utf-8') as f:
-                return json.load(f)
+                data = json.load(f)
+                print(f"✓ Loaded {len(data)} assessments from {path}")
+                return data
         except FileNotFoundError:
-            print(f"Warning: {path} not found. Using sample data.")
+            print(f"⚠ Warning: {path} not found. Using sample data.")
+            return self._get_sample_assessments()
+        except Exception as e:
+            print(f"⚠ Error loading {path}: {e}. Using sample data.")
             return self._get_sample_assessments()
     
     def _get_sample_assessments(self) -> List[Dict]:

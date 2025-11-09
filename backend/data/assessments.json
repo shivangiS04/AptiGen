@@ -1,0 +1,102 @@
+[
+  {
+    "name": "Python (New)",
+    "url": "https://www.shl.com/solutions/products/product-catalog/view/python-new/",
+    "description": "Multi-choice test that measures the knowledge of Python programming, databases, modules and library. For junior to mid-level roles.",
+    "test_type": "K",
+    "adaptive_support": "No",
+    "remote_support": "Yes",
+    "duration": 30,
+    "skills": ["python", "programming", "databases", "technical"]
+  },
+  {
+    "name": "Technology Professional 8.0 Job Focused Assessment",
+    "url": "https://www.shl.com/solutions/products/product-catalog/view/technology-professional-8-0-job-focused-assessment/",
+    "description": "The Technology Job Focused Assessment assesses key behavioral attributes required for success in fast-paced roles.",
+    "test_type": "P",
+    "adaptive_support": "No",
+    "remote_support": "Yes",
+    "duration": 45,
+    "skills": ["competencies", "personality", "behavior"]
+  },
+  {
+    "name": "Java Programming Assessment",
+    "url": "https://www.shl.com/solutions/products/product-catalog/view/java/",
+    "description": "Evaluates Java programming skills including OOP concepts, data structures, and algorithms.",
+    "test_type": "K",
+    "adaptive_support": "No",
+    "remote_support": "Yes",
+    "duration": 40,
+    "skills": ["java", "programming", "technical", "oop"]
+  },
+  {
+    "name": "SQL Assessment",
+    "url": "https://www.shl.com/solutions/products/product-catalog/view/sql/",
+    "description": "Tests SQL query writing, database design, and data manipulation skills.",
+    "test_type": "K",
+    "adaptive_support": "No",
+    "remote_support": "Yes",
+    "duration": 35,
+    "skills": ["sql", "database", "technical"]
+  },
+  {
+    "name": "JavaScript Assessment",
+    "url": "https://www.shl.com/solutions/products/product-catalog/view/javascript/",
+    "description": "Measures JavaScript programming knowledge including ES6+, async programming, and DOM manipulation.",
+    "test_type": "K",
+    "adaptive_support": "No",
+    "remote_support": "Yes",
+    "duration": 35,
+    "skills": ["javascript", "programming", "technical", "web"]
+  },
+  {
+    "name": "Teamwork and Collaboration Assessment",
+    "url": "https://www.shl.com/solutions/products/product-catalog/view/teamwork/",
+    "description": "Measures ability to work effectively in teams and collaborate with stakeholders.",
+    "test_type": "P",
+    "adaptive_support": "No",
+    "remote_support": "Yes",
+    "duration": 25,
+    "skills": ["teamwork", "collaboration", "communication"]
+  },
+  {
+    "name": "Leadership Assessment",
+    "url": "https://www.shl.com/solutions/products/product-catalog/view/leadership/",
+    "description": "Evaluates leadership competencies and management capabilities.",
+    "test_type": "P",
+    "adaptive_support": "No",
+    "remote_support": "Yes",
+    "duration": 30,
+    "skills": ["leadership", "management", "decision-making"]
+  },
+  {
+    "name": "Cognitive Ability Test",
+    "url": "https://www.shl.com/solutions/products/product-catalog/view/cognitive/",
+    "description": "Measures analytical thinking, problem-solving, and reasoning abilities.",
+    "test_type": "A",
+    "adaptive_support": "Yes",
+    "remote_support": "Yes",
+    "duration": 20,
+    "skills": ["cognitive", "analytical", "problem-solving", "reasoning"]
+  },
+  {
+    "name": "Communication Skills Assessment",
+    "url": "https://www.shl.com/solutions/products/product-catalog/view/communication/",
+    "description": "Assesses written and verbal communication effectiveness.",
+    "test_type": "C",
+    "adaptive_support": "No",
+    "remote_support": "Yes",
+    "duration": 30,
+    "skills": ["communication", "writing", "presentation"]
+  },
+  {
+    "name": "Analytical Thinking Assessment",
+    "url": "https://www.shl.com/solutions/products/product-catalog/view/analytical/",
+    "description": "Tests data analysis, logical reasoning, and critical thinking skills.",
+    "test_type": "A",
+    "adaptive_support": "Yes",
+    "remote_support": "Yes",
+    "duration": 25,
+    "skills": ["analytical", "data-analysis", "logical-reasoning"]
+  }
+]
