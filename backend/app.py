@@ -7,17 +7,22 @@ from pydantic import BaseModel
 from typing import List, Optional
 import uvicorn
 from recommender import AssessmentRecommender
+import os
 
 app = FastAPI(title="SHL Assessment Recommendation API")
 
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://aptigen-ai-11yy.onrender.com",
+        "http://localhost:3000"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # Initialize recommender
 recommender = AssessmentRecommender()
@@ -91,5 +96,5 @@ async def recommend_assessments(request: RecommendRequest):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("PORT", 8000)))
-
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
