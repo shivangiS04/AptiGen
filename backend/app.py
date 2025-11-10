@@ -26,8 +26,23 @@ app.add_middleware(
 )
 
 
-# Initialize recommender
-recommender = AssessmentRecommender()
+# Initialize recommender as None - will load on first request
+recommender = None
+
+def get_recommender():
+    """Lazy load recommender on first request"""
+    global recommender
+    if recommender is None:
+        print("🚀 Initializing AssessmentRecommender...")
+        try:
+            recommender = AssessmentRecommender()
+            print("✅ Recommender initialized successfully!")
+        except Exception as e:
+            print(f"❌ Error initializing recommender: {e}")
+            import traceback
+            traceback.print_exc()
+            raise
+    return recommender
 
 
 class RecommendRequest(BaseModel):
@@ -48,6 +63,20 @@ class RecommendResponse(BaseModel):
     recommended_assessments: List[AssessmentRecommendation]
 
 
+@app.get("/")
+async def root():
+    """Root endpoint"""
+    return {
+        "message": "SHL Assessment Recommendation API",
+        "status": "running",
+        "endpoints": {
+            "health": "/health",
+            "recommend": "/recommend (POST)",
+            "docs": "/docs"
+        }
+    }
+
+
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
@@ -64,8 +93,11 @@ async def recommend_assessments(request: RecommendRequest):
         if not request.query or len(request.query.strip()) == 0:
             raise HTTPException(status_code=400, detail="Query cannot be empty")
         
+        # Get recommender (lazy load)
+        rec = get_recommender()
+        
         # Get recommendations
-        recommendations = recommender.recommend(request.query, top_k=10)
+        recommendations = rec.recommend(request.query, top_k=10)
         
         # Ensure minimum 5 recommendations
         if len(recommendations) < 5:
