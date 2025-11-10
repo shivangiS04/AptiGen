@@ -14,7 +14,8 @@ from collections import defaultdict
 
 class AssessmentRecommender:
     def __init__(self, assessments_path: str = None):
-        self.model = SentenceTransformer('all-MiniLM-L6-v2')
+        self.model = None
+
         
         # Smart path resolution for different environments
         if assessments_path is None:
@@ -82,16 +83,20 @@ class AssessmentRecommender:
                 'skills': ['teamwork', 'collaboration', 'communication']
             }
         ]
-    
+
     def _build_index(self):
         """Build embeddings index for all assessments"""
+        if self.model is None:
+            from sentence_transformers import SentenceTransformer
+            self.model = SentenceTransformer('paraphrase-MiniLM-L3-v2')
+
         texts = [
             f"{a['name']} {a['description']} {' '.join(a.get('skills', []))}"
             for a in self.assessments
         ]
-        self.embeddings = self.model.encode(texts)
+        self.embeddings = self.model.encode(texts, convert_to_numpy=True, dtype=np.float16)
 
-    
+
     def recommend(self, query: str, top_k: int = 10) -> List[Dict]:
         """
         Recommend assessments based on query
