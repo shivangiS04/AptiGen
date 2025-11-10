@@ -142,33 +142,3 @@ lsof -ti:8000 | xargs kill -9  # Mac/Linux
 python scripts/scrape_shl.py
 ```
 
-## 📚 Next Steps
-
-1. **Customize Data**: Update `data/assessments.json` with real SHL catalog data
-2. **Improve Scraper**: Modify `backend/scraper.py` for actual SHL website structure
-3. **Add LLM**: Set `GEMINI_API_KEY` in `backend/.env` for enhanced recommendations
-4. **Deploy**: Follow [DEPLOYMENT.md](DEPLOYMENT.md) to deploy to cloud
-5. **Optimize**: Use evaluation metrics to improve recommendation quality
-
-## 🎯 Key Features
-
-- ✅ Semantic search using sentence transformers
-- ✅ Balanced recommendations across test types
-- ✅ Fast response (< 500ms)
-- ✅ RESTful API with proper error handling
-- ✅ Modern, responsive UI
-- ✅ Evaluation metrics (Mean Recall@10)
-- ✅ CSV export for submissions
-
-## 📖 Documentation
-
-- [README.md](README.md) - Project overview
-- [APPROACH.md](APPROACH.md) - Detailed methodology
-- [DEPLOYMENT.md](DEPLOYMENT.md) - Deployment guide
-- [SUBMISSION_CHECKLIST.md](SUBMISSION_CHECKLIST.md) - Submission checklist
-
-## 🤝 Need Help?
-
-Check the documentation files or review the code comments. All major functions are documented with docstrings.
-
-**Happy coding!** 🎉
