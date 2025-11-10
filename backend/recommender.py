@@ -94,7 +94,7 @@ class AssessmentRecommender:
             f"{a['name']} {a['description']} {' '.join(a.get('skills', []))}"
             for a in self.assessments
         ]
-        self.embeddings = self.model.encode(texts, convert_to_numpy=True, dtype=np.float16)
+        self.embeddings = self.model.encode(texts, convert_to_numpy=True)
 
 
     def recommend(self, query: str, top_k: int = 10) -> List[Dict]:
